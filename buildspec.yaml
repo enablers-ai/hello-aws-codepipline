@@ -7,14 +7,24 @@ phases:
       - echo default region is  $AWS_DEFAULT_REGION
       - echo Logging in to Amazon ECR...
       - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
+      - curl -o kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.15.10/2020-02-22/bin/darwin/amd64/kubectl
+      - chmod +x ./kubectl
+      - mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$HOME/bin:$PATH
+      - kubectl version --short --client
+      #3. Create kubeconfig file for your EKS cluster, replace region and name values
+      #3a. If role is direcly mentioned, uncomment below line and replace role_arn
+      #- aws eks --region $AWS_DEFAULT_REGION update-kubeconfig --name $EKS_CLUSTER_NAME --role-arn <role_arn>
+      - aws eks --region $AWS_DEFAULT_REGION update-kubeconfig --name $EKS_CLUSTER_NAME --profile anotheracc
+      - cat ~/.kube/config
+      #4. Set the image tag
+      - export TAG=$CODEBUILD_RESOLVED_SOURCE_VERSION
   build:
     commands:
       - echo Build started on `date`
       - echo Building the Docker image...
-      - docker build -t 347564148062.dkr.ecr.us-east-1.amazonaws.com/hello .
+      - kubectl get svc
 
   post_build:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker image...
-      - docker push 347564148062.dkr.ecr.us-east-1.amazonaws.com/hello:latest
