@@ -17,16 +17,18 @@ phases:
     commands:
       - echo Build started on `date`
       - echo Building the Docker image...
+      - echo Logging in to Amazon EKS...
+      - aws eks --region $AWS_DEFAULT_REGION update-kubeconfig --name $AWS_CLUSTER_NAME
 
   post_build:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker image...
-      - echo Logging in to Amazon EKS...
+
       # - CREDENTIALS=$(aws sts assume-role --role-arn arn:aws:iam::347564148062:role/eksctl-eks-bacth-cluster-nodegrou-NodeInstanceRole-WG5KEEE9PA08 --role-session-name codebuild-kubectl --duration-seconds 900)
       # - export AWS_ACCESS_KEY_ID="$(echo ${CREDENTIALS} | jq -r '.Credentials.AccessKeyId')"
       # - export AWS_SECRET_ACCESS_KEY="$(echo ${CREDENTIALS} | jq -r '.Credentials.SecretAccessKey')"
       # - export AWS_SESSION_TOKEN="$(echo ${CREDENTIALS} | jq -r '.Credentials.SessionToken')"
       # - export AWS_EXPIRATION=$(echo ${CREDENTIALS} | jq -r '.Credentials.Expiration')
-      - aws eks --region us-east-1 update-kubeconfig --name eks-bacth-cluster
-      - kubectl get svc
+      # - aws eks --region us-east-1 update-kubeconfig --name eks-bacth-cluster
+      # - kubectl get svc
