@@ -3,6 +3,7 @@ phases:
   pre_build:
     commands:
       - echo starting pre build phase
+      - echo build 2.2
       - echo default region is  $AWS_DEFAULT_REGION
       - echo Logging in to Amazon ECR...
       - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
