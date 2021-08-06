@@ -11,10 +11,10 @@ phases:
     commands:
       - echo Build started on `date`
       - echo Building the Docker image...
+      - docker build -t 347564148062.dkr.ecr.us-east-1.amazonaws.com/hello .
 
   post_build:
     commands:
       - echo Build completed on `date`
-      - aws eks --region $AWS_DEFAULT_REGION update-kubeconfig --name eks-bacth-cluster
-      - kubectl apply -f code/hello/deploy.yaml
-      - kubectl get svc
+      - echo Pushing the Docker image...
+      - docker push 347564148062.dkr.ecr.us-east-1.amazonaws.com/hello:latest
