@@ -18,3 +18,5 @@ phases:
       - echo Build completed on `date`
       - echo Pushing the Docker image...
       - docker push 347564148062.dkr.ecr.us-east-1.amazonaws.com/hello:latest
+      - aws eks --region $AWS_DEFAULT_REGION update-kubeconfig --name eks-bacth-cluster
+      - kubectl apply -f code/hello/deploy.yaml

@@ -7,24 +7,17 @@ phases:
       - echo default region is  $AWS_DEFAULT_REGION
       - echo Logging in to Amazon ECR...
       - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
-      - echo Installing app dependencies...
-      - curl -o kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.15.10/2020-02-22/bin/linux/amd64/kubectl
-      - chmod +x ./kubectl
-      - mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$PATH:$HOME/bin
-      - echo 'export PATH=$PATH:$HOME/bin' >> ~/.bashrc
-      - source ~/.bashrc
   build:
     commands:
       - echo Build started on `date`
       - echo Building the Docker image...
-      - echo Logging in to Amazon EKS...
-      - aws sts get-caller-identity
-      - aws eks --region $AWS_DEFAULT_REGION update-kubeconfig --name $AWS_CLUSTER_NAME
+      - docker build -t 347564148062.dkr.ecr.us-east-1.amazonaws.com/hello .
 
   post_build:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker image...
+      - docker push 347564148062.dkr.ecr.us-east-1.amazonaws.com/hello:latest
 
       # - CREDENTIALS=$(aws sts assume-role --role-arn arn:aws:iam::347564148062:role/eksctl-eks-bacth-cluster-nodegrou-NodeInstanceRole-WG5KEEE9PA08 --role-session-name codebuild-kubectl --duration-seconds 900)
       # - export AWS_ACCESS_KEY_ID="$(echo ${CREDENTIALS} | jq -r '.Credentials.AccessKeyId')"
