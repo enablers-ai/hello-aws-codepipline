@@ -18,7 +18,6 @@ spec:
     spec:
       containers:
         - name: hello
-          imagePullPolicy: Always
           image: 347564148062.dkr.ecr.us-east-1.amazonaws.com/hello:latest
           ports:
             - containerPort: 3000
