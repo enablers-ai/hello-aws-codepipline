@@ -2,6 +2,10 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: hello-deployment
+   labels:
+    app: hello
+  annotations:
+    fluxcd.io/automated: "true" 
 spec:
   selector:
     matchLabels:
@@ -11,9 +15,6 @@ spec:
     metadata:
       labels:
         app: hello
-      annotations:
-        fluxcd.io/automated: "true"
-
     spec:
       containers:
         - name: hello
