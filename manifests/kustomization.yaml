@@ -1,3 +1,5 @@
+namespace: default
+
 bases:
 - helloworld-deploy.yaml
 - helloworld-service.yaml
