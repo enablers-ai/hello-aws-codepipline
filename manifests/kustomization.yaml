@@ -3,3 +3,7 @@ namespace: default
 bases:
 - helloworld-deploy.yaml
 - helloworld-service.yaml
+
+images:
+  - name: 347564148062.dkr.ecr.us-east-1.amazonaws.com/hello
+    newTag: 3b9a808
