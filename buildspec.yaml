@@ -7,17 +7,19 @@ phases:
       - echo default region is  $AWS_DEFAULT_REGION
       - echo Logging in to Amazon ECR...
       - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
+      - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+      - IMAGE_TAG=${COMMIT_HASH:=latest}
   build:
     commands:
       - echo Build started on `date`
       - echo Building the Docker image...
-      - docker build -t 347564148062.dkr.ecr.us-east-1.amazonaws.com/hello .
+      - docker build -t 347564148062.dkr.ecr.us-east-1.amazonaws.com/hello:$IMAGE_TAG .
 
   post_build:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker image...
-      - docker push 347564148062.dkr.ecr.us-east-1.amazonaws.com/hello:latest
+      - docker push 347564148062.dkr.ecr.us-east-1.amazonaws.com/hello:$IMAGE_TAG
 
       # - CREDENTIALS=$(aws sts assume-role --role-arn arn:aws:iam::347564148062:role/eksctl-eks-bacth-cluster-nodegrou-NodeInstanceRole-WG5KEEE9PA08 --role-session-name codebuild-kubectl --duration-seconds 900)
       # - export AWS_ACCESS_KEY_ID="$(echo ${CREDENTIALS} | jq -r '.Credentials.AccessKeyId')"
